@@ -243,7 +243,7 @@
                     <p><strong>{{ vendor }}</strong></p>
                     <ul>
                         {% for product in products %}
-                        <li>{{ product }}</li>
+                        <li>{% if product[1] %} <strong>vulnerable</strong> {% else %} condition {% endif %} - {{ product[0]}}</li>
                         {% endfor %}
                     </ul>
                     {% endfor %}

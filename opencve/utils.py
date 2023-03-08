@@ -32,17 +32,12 @@ def flatten_vendors(vendors):
     """
     data = []
     for vendor, products in vendors.items():
-        vulnerable_vendor = False
+        data.append(vendor)
         for product in products:
             product_string = f"{vendor}{PRODUCT_SEPARATOR}{product[0]}"
             if product[1]:
                 product_string += VULNERABLE_SEPARATOR
-                vulnerable_vendor = True
             data.append(product_string)
-        if vulnerable_vendor:
-            data.insert(0,vendor+VULNERABLE_SEPARATOR)
-        else:
-            data.insert(0, vendor)
     return data
 
 
