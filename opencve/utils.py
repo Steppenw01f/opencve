@@ -1,7 +1,7 @@
 from nested_lookup import nested_lookup
 from difflib import HtmlDiff
 
-from opencve.constants import PRODUCT_SEPARATOR
+from opencve.constants import PRODUCT_SEPARATOR, VULNERABLE_SEPARATOR
 from opencve.models.cwe import Cwe
 
 
@@ -10,17 +10,18 @@ def convert_cpes(conf):
     This function takes an object, extracts its CPE uris and transforms them into
     a dictionnary representing the vendors with their associated products.
     """
-    uris = nested_lookup("cpe23Uri", conf) if not isinstance(conf, list) else conf
+    matches = nested_lookup("cpe_match", conf) if not isinstance(conf, list) else conf
 
+    uris = [(cpe["cpe23Uri"], cpe["vulnerable"]) for match in matches for cpe in match]
     # Create a list of tuple (vendor, product)
-    cpes_t = list(set([tuple(uri.split(":")[3:5]) for uri in uris]))
+    cpes_t = list(set([tuple(uri[0].split(":")[3:5]+ [uri[1]]) for uri in uris]))
 
     # Transform it into nested dictionnary
     cpes = {}
-    for vendor, product in cpes_t:
+    for vendor, product, vulnerable in cpes_t:
         if vendor not in cpes:
             cpes[vendor] = []
-        cpes[vendor].append(product)
+        cpes[vendor].append((product,vulnerable))
 
     return cpes
 
@@ -31,9 +32,17 @@ def flatten_vendors(vendors):
     """
     data = []
     for vendor, products in vendors.items():
-        data.append(vendor)
+        vulnerable_vendor = False
         for product in products:
-            data.append(f"{vendor}{PRODUCT_SEPARATOR}{product}")
+            product_string = f"{vendor}{PRODUCT_SEPARATOR}{product[0]}"
+            if product[1]:
+                product_string += VULNERABLE_SEPARATOR
+                vulnerable_vendor = True
+            data.append(product_string)
+        if vulnerable_vendor:
+            data.insert(0,vendor+VULNERABLE_SEPARATOR)
+        else:
+            data.insert(0, vendor)
     return data
 
 

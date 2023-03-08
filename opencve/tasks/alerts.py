@@ -1,6 +1,6 @@
 from celery.utils.log import get_task_logger
 
-from opencve.constants import PRODUCT_SEPARATOR
+from opencve.constants import PRODUCT_SEPARATOR, VULNERABLE_SEPARATOR
 from opencve.extensions import cel, db
 from opencve.models.alerts import Alert
 from opencve.models.cve import Cve
@@ -30,6 +30,9 @@ def filter_events(user, events):
 
         if not any(s in filtered_events["first_time"].details for s in subscriptions):
             del filtered_events["first_time"]
+
+        if not any(s in filtered_events["vulnerable"].details for s in subscriptions):
+            del filtered_events["vulnerable"]
 
     return list(filtered_events.values())
 
@@ -65,11 +68,13 @@ def handle_alerts():
                     name=v.split(PRODUCT_SEPARATOR)[0]
                 ).first()
                 product = Product.query.filter_by(
-                    name=v.split(PRODUCT_SEPARATOR)[1], vendor_id=vendor.id
+                    name=v.split(PRODUCT_SEPARATOR)[1].replace(VULNERABLE_SEPARATOR, ""), vendor_id=vendor.id
                 ).first()
                 for user in product.users:
                     if user not in users.keys():
                         users[user] = {"products": [], "vendors": []}
+                    if user.filters_notifications["vulnerable"] and VULNERABLE_SEPARATOR not in v:
+                        continue
                     users[user]["products"].append(product.name)
 
             # Vendor
@@ -95,7 +100,6 @@ def handle_alerts():
 
             # Filter by CVSS v3 score
             cvss_score = cve.cvss3
-
             if cvss_score and cvss_score < user.filters_notifications["cvss"]:
                 logger.info(
                     "Skip alert for {0} because of CVSSv3 filter ({1} < {2})".format(

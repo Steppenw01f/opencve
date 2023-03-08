@@ -2,7 +2,7 @@ from flask import current_app as app
 from flask import request, url_for
 from flask_user import current_user
 
-from opencve.constants import EVENT_TYPES, PRODUCT_SEPARATOR
+from opencve.constants import EVENT_TYPES, PRODUCT_SEPARATOR, VULNERABLE_SEPARATOR
 from opencve.models.tags import UserTag
 
 
@@ -115,7 +115,7 @@ def _excerpt(objects, _type):
     # Construct the HTML
     for idx, obj in enumerate(objects):
         if _type == "products":
-            vendor, product = obj.split(PRODUCT_SEPARATOR)
+            vendor, product = obj.split(VULNERABLE_SEPARATOR)[0].split(PRODUCT_SEPARATOR)
             url = url_for("main.cves", vendor=vendor, product=product)
             output += f"<a href='{url}'>{_humanize_filter(product)}</a>"
         elif _type == "vendors":
@@ -182,4 +182,4 @@ def _event_description(code):
 
 
 def _remove_product_separator(s):
-    return s.replace(PRODUCT_SEPARATOR, " ")
+    return s.replace(PRODUCT_SEPARATOR, " ").replace(VULNERABLE_SEPARATOR, "")
