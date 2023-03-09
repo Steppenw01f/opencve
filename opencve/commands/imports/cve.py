@@ -87,7 +87,7 @@ def run():
                 )
 
                 # Create the vendors and their products
-                for vendor, products in cpes.items():
+                for vendor, products, _ in cpes.items():
 
                     # Create the vendor
                     if vendor not in mappings["vendors"].keys():
