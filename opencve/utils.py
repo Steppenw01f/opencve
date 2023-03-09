@@ -12,7 +12,7 @@ def convert_cpes(conf):
     """
     matches = nested_lookup("cpe_match", conf) if not isinstance(conf, list) else conf
 
-    uris = [(cpe["cpe23Uri"], cpe["vulnerable"]) for match in matches for cpe in match]
+    uris = [(cpe["cpe23Uri"], cpe["vulnerable"]) for match in matches for cpe in match if "cpe23Uri" in cpe]
     # Create a list of tuple (vendor, product)
     cpes_t = list(set([tuple(uri[0].split(":")[3:5]+ [uri[1]]) for uri in uris]))
 
