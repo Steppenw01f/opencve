@@ -30,7 +30,7 @@ class Cpes(BaseCheck):
             # Create the vendors and products objects if they don't exist
             vendors_products = convert_cpes(payload["added"])
 
-            for vendor, products in vendors_products.items():
+            for vendor, products, _ in vendors_products.items():
                 v_obj = Vendor.query.filter_by(name=vendor).first()
 
                 # Create the vendor and associate it to the CVE
