@@ -7,6 +7,7 @@ import requests
 
 from opencve.commands import header, info, timed_operation
 from opencve.commands.imports.cpe import get_slug
+from opencve.constants import VULNERABLE_SEPARATOR
 from opencve.extensions import db
 from opencve.utils import convert_cpes, flatten_vendors, get_cwes
 from opencve.models import get_uuid
@@ -88,7 +89,8 @@ def run():
 
                 # Create the vendors and their products
                 for vendor, products in cpes.items():
-
+                    if VULNERABLE_SEPARATOR in vendor:
+                        continue
                     # Create the vendor
                     if vendor not in mappings["vendors"].keys():
                         mappings["vendors"][vendor] = dict(id=get_uuid(), name=vendor)
