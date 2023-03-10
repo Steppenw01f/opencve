@@ -67,7 +67,7 @@ def run():
                 cwes = get_cwes(
                     item["cve"]["problemtype"]["problemtype_data"][0]["description"]
                 )
-                cpes = convert_cpes(item["configurations"])
+                cpes = convert_cpes(item["configurations"],True)
                 vendors = flatten_vendors(cpes)
 
                 # Create the CVEs mappings

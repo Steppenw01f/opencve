@@ -66,6 +66,8 @@ def handle_alerts():
                 product = Product.query.filter_by(
                     name=v.split(PRODUCT_SEPARATOR)[1], vendor_id=vendor.id
                 ).first()
+                if product is None:
+                    continue
                 for user in product.users:
                     if user not in users.keys():
                         users[user] = {"products": [], "vendors": []}

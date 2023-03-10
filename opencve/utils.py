@@ -23,7 +23,7 @@ def convert_cpes(conf, mark_vulnerable=False):
                 if cpe["vulnerable"]:
                     if VULNERABLE_SEPARATOR + vendor_product[0] not in cpes:
                         cpes[VULNERABLE_SEPARATOR+vendor_product[0]] = []
-                    cpes[VULNERABLE_SEPARATOR+vendor_product[0]].append(VULNERABLE_SEPARATOR + vendor_product[1])
+                    cpes[VULNERABLE_SEPARATOR+vendor_product[0]].append(vendor_product[1])
                 cpes[vendor_product[0]].append(vendor_product[1])
 
     else:
