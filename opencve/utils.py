@@ -1,39 +1,62 @@
 from nested_lookup import nested_lookup
 from difflib import HtmlDiff
 
-from opencve.constants import PRODUCT_SEPARATOR
+from opencve.constants import PRODUCT_SEPARATOR, VULNERABLE_SEPARATOR
 from opencve.models.cwe import Cwe
 
 
-def convert_cpes(conf):
+def convert_cpes(conf, mark_vulnerable = False):
     """
     This function takes an object, extracts its CPE uris and transforms them into
     a dictionnary representing the vendors with their associated products.
     """
-    uris = nested_lookup("cpe23Uri", conf) if not isinstance(conf, list) else conf
-
-    # Create a list of tuple (vendor, product)
-    cpes_t = list(set([tuple(uri.split(":")[3:5]) for uri in uris]))
-
-    # Transform it into nested dictionnary
     cpes = {}
-    for vendor, product in cpes_t:
-        if vendor not in cpes:
-            cpes[vendor] = []
-        cpes[vendor].append(product)
+    if mark_vulnerable:
+        matches = nested_lookup("cpe_match", conf) if not isinstance(conf, list) else conf
+        uris = [(cpe["cpe23Uri"], cpe["vulnerable"]) for match in matches for cpe in match if "cpe23Uri" in cpe]
+        # Create a list of tuple (vendor, product, vulnerable)
+        cpes_t = list(set([tuple(uri[0].split(":")[3:5] + [uri[1]]) for uri in uris]))
+
+        # Transform it into nested dictionnary
+        for vendor, product, vulnerable in cpes_t:
+            if vendor not in cpes:
+                cpes[vendor] = []
+            cpes[vendor].append((product, vulnerable))
+    else:
+        uris = nested_lookup("cpe23Uri", conf) if not isinstance(conf, list) else conf
+        # Create a list of tuple (vendor, product)
+        cpes_t = list(set([tuple(uri.split(":")[3:5]) for uri in uris]))
+
+        # Transform it into nested dictionnary
+        for vendor, product in cpes_t:
+            if vendor not in cpes:
+                cpes[vendor] = []
+            cpes[vendor].append(product)
 
     return cpes
 
 
-def flatten_vendors(vendors):
+def flatten_vendors(vendors, marked_vulnerable=False):
     """
     Takes a list of nested vendors and products and flat them.
     """
     data = []
-    for vendor, products in vendors.items():
-        data.append(vendor)
-        for product in products:
-            data.append(f"{vendor}{PRODUCT_SEPARATOR}{product}")
+    if marked_vulnerable:
+        for vendor, products in vendors.items():
+            data.append(vendor)
+            vendor_vulnerable = False
+            for product, vulnerable  in products:
+                if vulnerable:
+                    vendor_vulnerable = True
+                    data.append(f"{VULNERABLE_SEPARATOR}{vendor}{PRODUCT_SEPARATOR}{product}")
+                data.append(f"{vendor}{PRODUCT_SEPARATOR}{product}")
+            if vendor_vulnerable:
+                data.append(f"{VULNERABLE_SEPARATOR}{vendor}")
+    else:
+        for vendor, products in vendors.items():
+            data.append(vendor)
+            for product in products:
+                data.append(f"{vendor}{PRODUCT_SEPARATOR}{product}")
     return data
 
 

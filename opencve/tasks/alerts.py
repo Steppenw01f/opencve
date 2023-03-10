@@ -1,6 +1,6 @@
 from celery.utils.log import get_task_logger
 
-from opencve.constants import PRODUCT_SEPARATOR
+from opencve.constants import PRODUCT_SEPARATOR, VULNERABLE_SEPARATOR
 from opencve.extensions import cel, db
 from opencve.models.alerts import Alert
 from opencve.models.cve import Cve
@@ -58,7 +58,6 @@ def handle_alerts():
 
         # Save the subscribers for each vendor of the CVE
         for v in cve.vendors:
-
             # Product contains the separator
             if PRODUCT_SEPARATOR in v:
                 vendor = Vendor.query.filter_by(
@@ -70,7 +69,10 @@ def handle_alerts():
                 for user in product.users:
                     if user not in users.keys():
                         users[user] = {"products": [], "vendors": []}
-                    users[user]["products"].append(product.name)
+                    if "vulnerable" in user.filters_notifications and VULNERABLE_SEPARATOR in product.name:
+                        users[user]["products"].append(product.name.replace(VULNERABLE_SEPARATOR, ""))
+                    elif "vulnerable" not in  user.filters_notifications and VULNERABLE_SEPARATOR not in product.name:
+                        users[user]["products"].append(product.name)
 
             # Vendor
             else:

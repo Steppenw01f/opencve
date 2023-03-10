@@ -23,10 +23,9 @@ class Cpes(BaseCheck):
 
             # Change the CVE's vendors attribute
             self.cve_obj.vendors = flatten_vendors(
-                convert_cpes(self.cve_json["configurations"])
+                convert_cpes(self.cve_json["configurations"], True)
             )
             db.session.commit()
-
             # Create the vendors and products objects if they don't exist
             vendors_products = convert_cpes(payload["added"])
 
