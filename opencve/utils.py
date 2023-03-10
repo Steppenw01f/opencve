@@ -21,8 +21,9 @@ def convert_cpes(conf, mark_vulnerable=False):
                 if vendor_product[0] not in cpes:
                     cpes[vendor_product[0]] = []
                 if cpe["vulnerable"]:
-                    cpes[VULNERABLE_SEPARATOR+vendor_product[0]] = []
-                    cpes[vendor_product[0]].append(VULNERABLE_SEPARATOR + vendor_product[1])
+                    if VULNERABLE_SEPARATOR + vendor_product[0] not in cpes:
+                        cpes[VULNERABLE_SEPARATOR+vendor_product[0]] = []
+                    cpes[VULNERABLE_SEPARATOR+vendor_product[0]].append(VULNERABLE_SEPARATOR + vendor_product[1])
                 cpes[vendor_product[0]].append(vendor_product[1])
 
     else:
@@ -39,27 +40,15 @@ def convert_cpes(conf, mark_vulnerable=False):
     return cpes
 
 
-def flatten_vendors(vendors, marked_vulnerable=False):
+def flatten_vendors(vendors):
     """
     Takes a list of nested vendors and products and flat them.
     """
     data = []
-    if marked_vulnerable:
-        for vendor, products in vendors.items():
-            data.append(vendor)
-            vendor_vulnerable = False
-            for product, vulnerable  in products:
-                if vulnerable:
-                    vendor_vulnerable = True
-                    data.append(f"{VULNERABLE_SEPARATOR}{vendor}{PRODUCT_SEPARATOR}{product}")
-                data.append(f"{vendor}{PRODUCT_SEPARATOR}{product}")
-            if vendor_vulnerable:
-                data.append(f"{VULNERABLE_SEPARATOR}{vendor}")
-    else:
-        for vendor, products in vendors.items():
-            data.append(vendor)
-            for product in products:
-                data.append(f"{vendor}{PRODUCT_SEPARATOR}{product}")
+    for vendor, products in vendors.items():
+        data.append(vendor)
+        for product in products:
+            data.append(f"{vendor}{PRODUCT_SEPARATOR}{product}")
     return data
 
 
