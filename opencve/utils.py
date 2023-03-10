@@ -5,7 +5,7 @@ from opencve.constants import PRODUCT_SEPARATOR, VULNERABLE_SEPARATOR
 from opencve.models.cwe import Cwe
 
 
-def convert_cpes(conf, mark_vulnerable = False):
+def convert_cpes(conf, mark_vulnerable=False):
     """
     This function takes an object, extracts its CPE uris and transforms them into
     a dictionnary representing the vendors with their associated products.
@@ -13,15 +13,18 @@ def convert_cpes(conf, mark_vulnerable = False):
     cpes = {}
     if mark_vulnerable:
         matches = nested_lookup("cpe_match", conf) if not isinstance(conf, list) else conf
-        uris = [(cpe["cpe23Uri"], cpe["vulnerable"]) for match in matches for cpe in match if "cpe23Uri" in cpe]
-        # Create a list of tuple (vendor, product, vulnerable)
-        cpes_t = list(set([tuple(uri[0].split(":")[3:5] + [uri[1]]) for uri in uris]))
+        for match in matches:
+            for cpe in match:
+                if "cpe23Uri" not in cpe:
+                    continue
+                vendor_product = cpe["cpe23Uri"].split(":")[3:5]
+                if vendor_product[0] not in cpes:
+                    cpes[vendor_product[0]] = []
+                if cpe["vulnerable"]:
+                    cpes[VULNERABLE_SEPARATOR+vendor_product[0]] = []
+                    cpes[vendor_product[0]].append(VULNERABLE_SEPARATOR + vendor_product[1])
+                cpes[vendor_product[0]].append(vendor_product[1])
 
-        # Transform it into nested dictionnary
-        for vendor, product, vulnerable in cpes_t:
-            if vendor not in cpes:
-                cpes[vendor] = []
-            cpes[vendor].append((product, vulnerable))
     else:
         uris = nested_lookup("cpe23Uri", conf) if not isinstance(conf, list) else conf
         # Create a list of tuple (vendor, product)
