@@ -79,6 +79,8 @@ def handle_alerts():
             # Vendor
             else:
                 vendor = Vendor.query.filter_by(name=v).first()
+                if vendor is None:
+                    continue
                 for user in vendor.users:
                     if user not in users.keys():
                         users[user] = {"products": [], "vendors": []}
