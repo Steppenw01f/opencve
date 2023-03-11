@@ -63,6 +63,8 @@ def handle_alerts():
                 vendor = Vendor.query.filter_by(
                     name=v.split(PRODUCT_SEPARATOR)[0]
                 ).first()
+                if vendor is None:
+                    continue
                 product = Product.query.filter_by(
                     name=v.split(PRODUCT_SEPARATOR)[1], vendor_id=vendor.id
                 ).first()
