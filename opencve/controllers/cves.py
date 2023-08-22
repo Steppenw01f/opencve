@@ -3,7 +3,7 @@ import json
 from flask import current_app as app
 from flask import abort, redirect, render_template, request, url_for
 from flask_paginate import Pagination
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, nullslast
 
 from opencve.constants import PRODUCT_SEPARATOR
 from opencve.controllers.base import BaseController
@@ -164,7 +164,10 @@ class CveController(BaseController):
                 cls.order = []
                 for x in sorting:
                     if x in options:
-                        cls.order.append(options[x]())
+                        if x.startswith("cvss"):
+                            cls.order.append(nullslast(options[x]()))
+                        else:
+                            cls.order.append(options[x]())
                         options.pop(x.rstrip("_asc"))
                         options.pop(x.rstrip("_asc") + "_asc")
 
