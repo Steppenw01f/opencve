@@ -200,7 +200,9 @@ def _display_sorting_icon(args: list, desc: str, asc: str):
     return output
 
 
-def _get_sort_parameter(args: list, value: str):
+def _get_sort_parameter(args, value):
+    if args is None:
+        args = []
     if value in args:
         args = args[:args.index(value)]
         args.append(value + "_asc")

@@ -54,8 +54,10 @@ def display_sorting_icon():
     return {"display_sorting_icon": _display_sorting_icon}
 
 
+@main.context_processor
 def get_sort_parameter():
     return {"get_sort_parameter": _get_sort_parameter}
+
 
 from flask import url_for
 

@@ -157,7 +157,7 @@ class CveController(BaseController):
                        "cvss3_asc": Cve.cvss3.asc
                        }
 
-            sorting = args.getlist("sort")
+            sorting = args.get("sort")
             if any(x in options.keys() for x in sorting):
                 cls.order = []
                 for x in sorting:
