@@ -147,8 +147,6 @@ class CveController(BaseController):
         if args.get("sort"):
             options = {"cve": Cve.cve_id.desc,
                        "cve_asc": Cve.cve_id.asc,
-                       "vendor": Cve.vendors.desc,
-                       "vendor_asc": Cve.vendors.asc,
                        "updated": Cve.updated_at.desc,
                        "updated_asc": Cve.updated_at.asc,
                        "published": Cve.created_at.desc,
@@ -159,12 +157,13 @@ class CveController(BaseController):
                        "cvss3_asc": Cve.cvss3.asc
                        }
 
-            sorting = args.get("sort")
+            sorting = args.getlist("sort")
             if any(x in options.keys() for x in sorting):
                 cls.order = []
                 for x in sorting:
                     if x in options:
                         if x.startswith("cvss"):
+                            # CVSS is often NULL if it gets rejected, therefore these values are listed last
                             cls.order.append(nullslast(options[x]()))
                         else:
                             cls.order.append(options[x]())
