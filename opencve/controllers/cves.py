@@ -155,7 +155,7 @@ class CveController(BaseController):
                 "cvss2": Cve.cvss2.desc,
                 "cvss2_asc": Cve.cvss2.asc,
                 "cvss3": Cve.cvss3.desc,
-                "cvss3_asc": Cve.cvss3.asc
+                "cvss3_asc": Cve.cvss3.asc,
             }
 
             sorting = args.get("sort")
