@@ -204,10 +204,10 @@ def _get_sort_parameter(args, value):
     if args is None:
         args = []
     if value in args:
-        args = args[:args.index(value)]
+        args = args[: args.index(value)]
         args.append(value + "_asc")
     elif value + "_asc" in args:
-        args = args[:args.index(value + "_asc")]
+        args = args[: args.index(value + "_asc")]
     else:
         args.append(value)
 

@@ -145,17 +145,18 @@ class CveController(BaseController):
                 .filter(CveTag.tags.contains([args.get("tag")]))
             )
         if args.get("sort"):
-            options = {"cve": Cve.cve_id.desc,
-                       "cve_asc": Cve.cve_id.asc,
-                       "updated": Cve.updated_at.desc,
-                       "updated_asc": Cve.updated_at.asc,
-                       "published": Cve.created_at.desc,
-                       "published_asc": Cve.created_at.asc,
-                       "cvss2": Cve.cvss2.desc,
-                       "cvss2_asc": Cve.cvss2.asc,
-                       "cvss3": Cve.cvss3.desc,
-                       "cvss3_asc": Cve.cvss3.asc
-                       }
+            options = {
+                "cve": Cve.cve_id.desc,
+                "cve_asc": Cve.cve_id.asc,
+                "updated": Cve.updated_at.desc,
+                "updated_asc": Cve.updated_at.asc,
+                "published": Cve.created_at.desc,
+                "published_asc": Cve.created_at.asc,
+                "cvss2": Cve.cvss2.desc,
+                "cvss2_asc": Cve.cvss2.asc,
+                "cvss3": Cve.cvss3.desc,
+                "cvss3_asc": Cve.cvss3.asc
+            }
 
             sorting = args.get("sort")
             if any(x in options.keys() for x in sorting):

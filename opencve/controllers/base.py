@@ -11,6 +11,7 @@ class BaseController(object):
     schema = {}
     # new parameter to allow multi value parameter
     multi_value_parameter = []
+
     @classmethod
     def build_query(cls, args):
         return cls.model.query, {}
