@@ -145,8 +145,8 @@ def test_filtered_by_cvss(app, create_cves, args, result):
     [
         ({"vendor": "redhat", "product": "ceph_storage"}, ["CVE-2020-27781"]),
         (
-            {"vendor": "linux", "product": "linux_kernel"},
-            ["CVE-2019-17052", "CVE-2019-8075"],
+                {"vendor": "linux", "product": "linux_kernel"},
+                ["CVE-2019-17052", "CVE-2019-8075"],
         ),
         ({"vendor": "redhat"}, ["CVE-2020-27781"]),
         ({"vendor": "linux"}, ["CVE-2019-17052", "CVE-2019-8075"]),
@@ -222,8 +222,8 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-26116",
                     "CVE-2019-17052",
                     "CVE-2018-18074",
-                ]
-         ),
+                ],
+        ),
         (
                 {"sort": ["cve"]},
                 [
@@ -233,8 +233,8 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-26116",
                     "CVE-2019-17052",
                     "CVE-2018-18074",
-                ]
-         ),
+                ],
+        ),
         (
                 {"sort": ["cve_asc"]},
                 [
@@ -244,8 +244,8 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-29660",
                     "CVE-2020-35076",
                     "CVE-2020-9392",
-                ]
-         ),
+                ],
+        ),
         (
                 {"sort": ["updated"]},
                 [
@@ -255,8 +255,8 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-26116",
                     "CVE-2020-9392",
                     "CVE-2018-18074",
-                ]
-         ),
+                ],
+        ),
         (
                 {"sort": ["updated_asc"]},
                 [
@@ -266,7 +266,7 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-35076",
                     "CVE-2020-29660",
                     "CVE-2019-17052",
-                ]
+                ],
         ),
         (
                 {"sort": ["published"]},
@@ -277,7 +277,7 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-9392",
                     "CVE-2019-17052",
                     "CVE-2018-18074",
-                ]
+                ],
         ),
         (
                 {"sort": ["published_asc"]},
@@ -288,7 +288,7 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-26116",
                     "CVE-2020-29660",
                     "CVE-2020-35076",
-                ]
+                ],
         ),
         (
                 {"sort": ["cvss2"]},
@@ -299,7 +299,7 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-29660",
                     "CVE-2019-17052",
                     "CVE-2020-35076",
-                ]
+                ],
         ),
         (
                 {"sort": ["cvss2_asc"]},
@@ -310,7 +310,7 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-26116",
                     "CVE-2020-9392",
                     "CVE-2020-35076",
-                ]
+                ],
         ),
         (
                 {"sort": ["cvss3"]},
@@ -321,8 +321,8 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-29660",
                     "CVE-2019-17052",
                     "CVE-2020-35076",
-                ]
-         ),
+                ],
+        ),
         (
                 {"sort": ["cvss3_asc"]},
                 [
@@ -332,7 +332,7 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2020-9392",
                     "CVE-2018-18074",
                     "CVE-2020-35076",
-                ]
+                ],
         ),
         (
                 {"sort": ["cvss2", "cvss3_asc"]},
@@ -343,7 +343,7 @@ def test_filtered_by_tags(app, create_cve, create_user):
                     "CVE-2019-17052",
                     "CVE-2020-29660",
                     "CVE-2020-35076",
-                ]
+                ],
         ),
     ],
 )
