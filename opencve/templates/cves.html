@@ -200,29 +200,29 @@ Vulnerabilities (CVE)
                             <thead>
                             <th>
                                 <a href='{{ url_for( 'main.cves' , sort=get_sort_parameter(request.args.getlist('sort'), 'cve'), tag=request.args.get('tag'), cvss=request.args.get('cvss'), search=request.args.get('search')) }}' class="btn btn-outline btn-block" style="color: #2b4049; font-weight: 600; font-size: 16px; text-align: left">
-                                    CVE <i class="{{ display_sorting_icon(sorting, "cve", "cve_asc") }}"></i>
+                                    CVE <i class="{{ display_sorting_icon(sorting, 'cve', 'cve_asc') }}"></i>
                                 </a>
                             </th>
                             <th>Vendors</th>
                             <th>Products</th>
                             <th class="text-center">
                                 <a href='{{ url_for( 'main.cves' , sort=get_sort_parameter(request.args.getlist('sort'), 'updated'), tag=request.args.get('tag'), cvss=request.args.get('cvss'), search=request.args.get('search')) }}' class="btn btn-outline btn-block" style="color: #2b4049; font-weight: 600; font-size: 16px">
-                                    Updated <i class="{{ display_sorting_icon(sorting, "updated", "updated_asc") }}"></i>
+                                    Updated <i class="{{ display_sorting_icon(sorting, 'updated', 'updated_asc') }}"></i>
                                 </a>
                             </th>
                             <th class="text-center">
                                 <a href='{{ url_for( 'main.cves' , sort=get_sort_parameter(request.args.getlist('sort'), 'published'), tag=request.args.get('tag'), cvss=request.args.get('cvss'), search=request.args.get('search')) }}' class="btn btn-outline btn-block" style="color: #2b4049; font-weight: 600; font-size: 16px; text-align: left">
-                                    Published <i class="{{ display_sorting_icon(sorting, "published", "published_asc") }}"></i>
+                                    Published <i class="{{ display_sorting_icon(sorting, 'published', 'published_asc') }}"></i>
                                 </a>
                             </th>
                             <th class="text-center">
                                 <a href='{{ url_for( 'main.cves' , sort=get_sort_parameter(request.args.getlist('sort'), 'cvss2'), tag=request.args.get('tag'), cvss=request.args.get('cvss'), search=request.args.get('search')) }}' class="btn btn-outline btn-block" style="color: #2b4049; font-weight: 600; font-size: 16px; text-align: left">
-                                    CVSS v2 <i class="{{ display_sorting_icon(sorting, "cvss2", "cvss2_asc") }}"></i>
+                                    CVSS v2 <i class="{{ display_sorting_icon(sorting, 'cvss2', 'cvss2_asc') }}"></i>
                                 </a>
                             </th>
                             <th class="text-center">
                                 <a href='{{ url_for( 'main.cves' , sort=get_sort_parameter(request.args.getlist('sort'), 'cvss3'), tag=request.args.get('tag'), cvss=request.args.get('cvss'), search=request.args.get('search')) }}' class="btn btn-outline btn-block" style="color: #2b4049; font-weight: 600; font-size: 16px; text-align: left">
-                                    CVSS v3 <i class="{{ display_sorting_icon(sorting, "cvss3", "cvss3_asc") }}"></i>
+                                    CVSS v3 <i class="{{ display_sorting_icon(sorting, 'cvss3', 'cvss3_asc') }}"></i>
                                 </a>
                             </th>
                             </thead>
